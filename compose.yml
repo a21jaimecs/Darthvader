@@ -1,0 +1,31 @@
+services:
+  dnsserver:
+    build: dnsserver
+    hostname: dnsserver
+    networks:
+      rededns:
+          ipv4_address: 192.168.20.11
+    volumes:
+      - ./dnsserver/conf/named.conf.options:/etc/bind/named.conf.options
+  eq1:
+    build: debian
+    hostname: eq1
+    networks:
+      rededns:
+          ipv4_address: 192.168.20.100
+
+  darthvader:
+    build: debian
+    hostname: darthvader
+    networks:
+      rededns:
+        ipv4_address: 192.168.20.10
+    ports:
+      - "8080:80"
+
+networks:
+  rededns:
+    ipam:
+      config:
+        - subnet: 192.168.20.0/24
+
